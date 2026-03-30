@@ -1,0 +1,141 @@
+<!-- Profile View -->
+<div class="py-4 fade-in">
+    <h2 class="text-gradient mb-4"><i class="bi bi-person-circle"></i> Profile & Settings</h2>
+
+    <div class="row" ng-show="!loading && user">
+        <!-- Profile Card -->
+        <div class="col-lg-4 mb-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <img ng-if="user.profileImage" 
+                             ng-src="{{user.profileImage}}" 
+                             class="rounded-circle" 
+                             style="width: 150px; height: 150px; object-fit: cover;"
+                             alt="Profile">
+                        <div ng-if="!user.profileImage" 
+                             class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center"
+                             style="width: 150px; height: 150px; font-size: 3rem;">
+                            {{user.name.charAt(0)}}
+                        </div>
+                    </div>
+                    <h4>{{user.name}}</h4>
+                    <p class="text-muted">{{user.email}}</p>
+                    
+                    <!-- Upload Image -->
+                    <div class="mt-3">
+                        <label class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-camera"></i> Change Photo
+                            <input type="file" 
+                                   accept="image/*" 
+                                   style="display: none;"
+                                   onchange="angular.element(this).scope().uploadImage(this.files)">
+                        </label>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="d-flex justify-content-around">
+                        <div>
+                            <h5 class="text-primary">{{user.theme}}</h5>
+                            <small class="text-muted">Theme</small>
+                        </div>
+                        <div>
+                            <h5 class="text-success">✓</h5>
+                            <small class="text-muted">Active</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Information -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-person-badge"></i> Personal Information</span>
+                    <button class="btn btn-sm btn-primary" ng-click="enableEdit()" ng-hide="editMode">
+                        <i class="bi bi-pencil"></i> Edit
+                    </button>
+                </div>
+                <div class="card-body">
+                    <form ng-submit="saveProfile()">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Full Name *</label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       ng-model="userForm.name" 
+                                       ng-disabled="!editMode"
+                                       required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Email *</label>
+                                <input type="email" 
+                                       class="form-control" 
+                                       ng-model="userForm.email" 
+                                       ng-class="getMobileClass()"
+                                       ng-disabled="!editMode"
+                                       required>
+                                <div class="error-message" ng-show="errors.email">{{errors.email}}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Mobile Number * (10 digits)</label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       ng-model="userForm.mobile" 
+                                       ng-class="getMobileClass()"
+                                       ng-change="validatePassword()"
+                                       ng-disabled="!editMode"
+                                       maxlength="10"
+                                       required>
+                                <div class="error-message" ng-show="errors.mobile">{{errors.mobile}}</div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Theme Preference</label>
+                                <select class="form-select" 
+                                        ng-model="userForm.theme" 
+                                        ng-disabled="!editMode">
+                                    <option value="light">Light</option>
+                                    <option value="dark">Dark</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div ng-show="editMode" class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-check-circle"></i> Save Changes
+                            </button>
+                            <button type="button" class="btn btn-secondary" ng-click="cancelEdit()">
+                                <i class="bi bi-x-circle"></i> Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- File Upload Instructions -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <i class="bi bi-info-circle"></i> Profile Image Guidelines
+                </div>
+                <div class="card-body">
+                    <ul class="mb-0">
+                        <li>Maximum file size: 5MB</li>
+                        <li>Accepted formats: JPEG, PNG, GIF</li>
+                        <li>Recommended size: 500x500 pixels</li>
+                        <li>Square images work best for profile pictures</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div ng-show="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+    </div>
+</div>

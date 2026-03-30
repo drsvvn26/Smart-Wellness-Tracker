@@ -1,0 +1,39 @@
+{
+  "courses": [
+    {
+      "id": 1,
+      "name": "Full Stack Web Development",
+      "description": "Learn HTML, CSS, JavaScript, Node.js, and MongoDB",
+      "duration": "6 months",
+      "level": "Intermediate"
+    },
+    {
+      "id": 2,
+      "name": "Data Science & Analytics",
+      "description": "Master Python, Machine Learning, and Data Visualization",
+      "duration": "8 months",
+      "level": "Advanced"
+    },
+    {
+      "id": 3,
+      "name": "Mobile App Development",
+      "description": "Build iOS and Android apps with React Native",
+      "duration": "5 months",
+      "level": "Intermediate"
+    },
+    {
+      "id": 4,
+      "name": "Cloud Computing & DevOps",
+      "description": "AWS, Azure, Docker, Kubernetes, and CI/CD",
+      "duration": "7 months",
+      "level": "Advanced"
+    },
+    {
+      "id": 5,
+      "name": "UI/UX Design",
+      "description": "Design principles, Figma, user research, and prototyping",
+      "duration": "4 months",
+      "level": "Beginner"
+    }
+  ]
+}

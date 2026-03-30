@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<students>
+    <student>
+        <id>S001</id>
+        <name>Alice Johnson</name>
+        <course>Computer Science</course>
+        <grade>A+</grade>
+    </student>
+    <student>
+        <id>S002</id>
+        <name>Bob Smith</name>
+        <course>Data Science</course>
+        <grade>A</grade>
+    </student>
+    <student>
+        <id>S003</id>
+        <name>Charlie Brown</name>
+        <course>Web Development</course>
+        <grade>B+</grade>
+    </student>
+    <student>
+        <id>S004</id>
+        <name>Diana Prince</name>
+        <course>Information Technology</course>
+        <grade>A</grade>
+    </student>
+    <student>
+        <id>S005</id>
+        <name>Eve Adams</name>
+        <course>Software Engineering</course>
+        <grade>A+</grade>
+    </student>
+</students>

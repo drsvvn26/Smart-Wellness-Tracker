@@ -1,0 +1,134 @@
+<!-- Dashboard View -->
+<div class="py-4 fade-in">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-gradient"><i class="bi bi-speedometer2"></i> Dashboard</h2>
+        <button class="btn btn-primary" ng-click="loadDashboard()">
+            <i class="bi bi-arrow-clockwise"></i> Refresh
+        </button>
+    </div>
+
+    <!-- Loading State -->
+    <div ng-show="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div ng-show="!loading && dashboardData">
+        <!-- Summary Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3 mb-3">
+                <div class="stat-card">
+                    <i class="bi bi-check2-square" style="font-size: 2rem;"></i>
+                    <h3>{{dashboardData.summary.totalHabits}}</h3>
+                    <p>Total Habits</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stat-card success">
+                    <i class="bi bi-fire" style="font-size: 2rem;"></i>
+                    <h3>{{dashboardData.summary.avgStreak}}</h3>
+                    <p>Average Streak</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stat-card warning">
+                    <i class="bi bi-heart-pulse" style="font-size: 2rem;"></i>
+                    <h3>{{dashboardData.summary.totalHealthReports}}</h3>
+                    <p>Health Reports</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stat-card info">
+                    <i class="bi bi-calendar-event" style="font-size: 2rem;"></i>
+                    <h3>{{dashboardData.summary.upcomingEvents}}</h3>
+                    <p>Upcoming Events</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Stats -->
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5>Completion Rate</h5>
+                        <div class="d-flex justify-content-around mt-3">
+                            <div>
+                                <h3 class="text-success">{{dashboardData.summary.totalCompletions}}</h3>
+                                <p class="text-muted">Completed</p>
+                            </div>
+                            <div>
+                                <h3 class="text-danger">{{dashboardData.summary.totalMissed}}</h3>
+                                <p class="text-muted">Missed</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card" ng-show="dashboardData.summary.bestHabit">
+                    <div class="card-body text-center">
+                        <h5>🏆 Best Performing Habit</h5>
+                        <h3 class="mt-3">{{dashboardData.summary.bestHabit.name}}</h3>
+                        <p class="text-muted">Streak: {{dashboardData.summary.bestHabit.streak}} days</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Smart Insights -->
+        <div class="row" ng-show="insights.length > 0">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="bi bi-lightbulb"></i> Smart Insights & Recommendations
+                    </div>
+                    <div class="card-body">
+                        <div ng-repeat="insight in insights" class="alert alert-{{insight.type === 'success' ? 'success' : insight.type === 'warning' ? 'warning' : insight.type === 'alert' ? 'danger' : 'info'}} mb-3">
+                            <div class="d-flex align-items-start">
+                                <i class="{{getInsightIcon(insight.type)}} me-3" style="font-size: 1.5rem;"></i>
+                                <div>
+                                    <h6 class="mb-1">{{insight.message}}</h6>
+                                    <p class="mb-0 small">💡 {{insight.suggestion}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row mt-4">
+            <div class="col-md-4 mb-3">
+                <a href="#!/habits" class="card text-decoration-none">
+                    <div class="card-body text-center">
+                        <i class="bi bi-plus-circle text-primary" style="font-size: 3rem;"></i>
+                        <h5 class="mt-3">Track Habits</h5>
+                        <p class="text-muted">Manage your daily habits</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 mb-3">
+                <a href="#!/health" class="card text-decoration-none">
+                    <div class="card-body text-center">
+                        <i class="bi bi-heart-pulse text-danger" style="font-size: 3rem;"></i>
+                        <h5 class="mt-3">Health Check</h5>
+                        <p class="text-muted">Analyze your symptoms</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 mb-3">
+                <a href="#!/calendar" class="card text-decoration-none">
+                    <div class="card-body text-center">
+                        <i class="bi bi-calendar-plus text-success" style="font-size: 3rem;"></i>
+                        <h5 class="mt-3">Plan Events</h5>
+                        <p class="text-muted">Schedule your activities</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

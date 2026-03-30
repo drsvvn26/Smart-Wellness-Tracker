@@ -1,0 +1,141 @@
+<!-- Analytics View -->
+<div class="py-4 fade-in">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-gradient"><i class="bi bi-graph-up"></i> Analytics Dashboard</h2>
+        <button class="btn btn-primary" ng-click="loadAnalytics()">
+            <i class="bi bi-arrow-clockwise"></i> Refresh
+        </button>
+    </div>
+
+    <!-- Loading State -->
+    <div ng-show="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+    </div>
+
+    <!-- Analytics Content -->
+    <div ng-show="!loading && dashboardData">
+        <!-- Summary Stats -->
+        <div class="row mb-4">
+            <div class="col-md-3 mb-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h2 class="text-primary">{{dashboardData.summary.totalCompletions}}</h2>
+                        <p class="text-muted mb-0">Total Completions</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h2 class="text-danger">{{dashboardData.summary.totalMissed}}</h2>
+                        <p class="text-muted mb-0">Missed</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h2 class="text-success">{{dashboardData.summary.avgStreak}}</h2>
+                        <p class="text-muted mb-0">Average Streak</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h2 class="text-info">{{dashboardData.summary.activeHabits}}</h2>
+                        <p class="text-muted mb-0">Active Habits</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="row">
+            <!-- Weekly Completion Bar Chart -->
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="bi bi-bar-chart-fill"></i> Weekly Habit Completion
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="weeklyChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Completion Rate Pie Chart -->
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="bi bi-pie-chart-fill"></i> Completion Rate
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="completionPieChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monthly Progress Line Chart -->
+            <div class="col-12 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="bi bi-graph-up-arrow"></i> Monthly Progress (Last 30 Days)
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container" style="height: 350px;">
+                            <canvas id="monthlyChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Habit-wise Completion Doughnut Chart -->
+            <div class="col-lg-6 mb-4" ng-show="dashboardData.charts.habitWiseCompletion.length > 0">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="bi bi-doughnut"></i> Top 5 Habits by Completion
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="habitWiseChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Health Reports Summary -->
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="bi bi-heart-pulse"></i> Health Reports Summary
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center mb-3">
+                            <h3>{{dashboardData.summary.totalHealthReports}}</h3>
+                            <p class="text-muted">Total Reports</p>
+                        </div>
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <h5 class="text-danger">{{dashboardData.charts.healthSeverity.high}}</h5>
+                                <small class="text-muted">High</small>
+                            </div>
+                            <div class="col-4">
+                                <h5 class="text-warning">{{dashboardData.charts.healthSeverity.medium}}</h5>
+                                <small class="text-muted">Medium</small>
+                            </div>
+                            <div class="col-4">
+                                <h5 class="text-success">{{dashboardData.charts.healthSeverity.low}}</h5>
+                                <small class="text-muted">Low</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

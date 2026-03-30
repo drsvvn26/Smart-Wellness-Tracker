@@ -1,0 +1,153 @@
+<!-- Health Checker View -->
+<div class="py-4 fade-in">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-gradient"><i class="bi bi-heart-pulse-fill"></i> Smart Health Checker</h2>
+        <button class="btn btn-primary" ng-click="loadHealthReports()">
+            <i class="bi bi-file-medical"></i> View Reports
+        </button>
+    </div>
+
+    <!-- Symptom Checker Form -->
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-clipboard-pulse"></i> Symptom Checker
+                </div>
+                <div class="card-body">
+                    <h6 class="mb-3">Select Your Symptoms:</h6>
+                    
+                    <!-- Available Symptoms -->
+                    <div class="mb-3">
+                        <label class="form-label">Common Symptoms:</label>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button class="btn btn-sm btn-outline-primary" 
+                                    ng-repeat="symptom in availableSymptoms" 
+                                    ng-click="addSymptom(symptom.name)">
+                                {{symptom.displayName}}
+                            </button>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- Custom Symptom Input -->
+                    <div class="mb-3">
+                        <label class="form-label">Add Custom Symptom:</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="customSymptom" 
+                                   placeholder="Enter symptom" ng-keypress="$event.keyCode === 13 && addCustomSymptom()">
+                            <button class="btn btn-primary" ng-click="addCustomSymptom()">
+                                <i class="bi bi-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Selected Symptoms -->
+                    <div class="mb-3" ng-show="selectedSymptoms.length > 0">
+                        <label class="form-label">Selected Symptoms:</label>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="badge bg-info" ng-repeat="symptom in selectedSymptoms">
+                                {{symptom}}
+                                <i class="bi bi-x-circle" ng-click="removeSymptom(symptom)" style="cursor: pointer;"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-success w-100" ng-click="analyzeSymptoms()" ng-disabled="selectedSymptoms.length === 0">
+                        <i class="bi bi-search"></i> Analyze Symptoms
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Current Report -->
+        <div class="col-lg-6 mb-4" ng-show="currentReport">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-file-medical-fill"></i> Health Analysis Report
+                </div>
+                <div class="card-body">
+                    <div class="alert" ng-class="'alert-' + (currentReport.severity === 'high' ? 'danger' : currentReport.severity === 'medium' ? 'warning' : 'info')">
+                        <strong>Severity: </strong>
+                        <span class="badge" ng-class="getSeverityBadgeClass(currentReport.severity)">
+                            {{currentReport.severity | uppercase}}
+                        </span>
+                    </div>
+
+                    <!-- Symptoms -->
+                    <div class="mb-3">
+                        <h6><i class="bi bi-clipboard-check"></i> Your Symptoms:</h6>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="badge bg-secondary" ng-repeat="symptom in currentReport.symptoms">
+                                {{symptom}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Possible Conditions -->
+                    <div class="mb-3" ng-show="currentReport.possibleConditions.length > 0">
+                        <h6><i class="bi bi-heart-pulse"></i> Possible Conditions:</h6>
+                        <ul class="list-group">
+                            <li class="list-group-item" ng-repeat="condition in currentReport.possibleConditions">
+                                <strong>{{condition.condition}}</strong>
+                                <span class="badge bg-primary float-end">{{condition.probability}}</span>
+                                <p class="small mb-0 mt-1">{{condition.description}}</p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Precautions -->
+                    <div class="mb-3" ng-show="currentReport.precautions.length > 0">
+                        <h6><i class="bi bi-shield-check"></i> Precautions:</h6>
+                        <ul>
+                            <li ng-repeat="precaution in currentReport.precautions">{{precaution}}</li>
+                        </ul>
+                    </div>
+
+                    <!-- Recommendations -->
+                    <div ng-show="currentReport.recommendations.length > 0">
+                        <h6><i class="bi bi-lightbulb"></i> Recommendations:</h6>
+                        <ul>
+                            <li ng-repeat="recommendation in currentReport.recommendations">{{recommendation}}</li>
+                        </ul>
+                    </div>
+
+                    <div class="alert alert-warning mt-3">
+                        <small><i class="bi bi-exclamation-triangle"></i> <strong>Disclaimer:</strong> This is an automated analysis. Please consult a healthcare professional for accurate diagnosis.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Previous Reports -->
+    <div ng-show="showReports && healthReports.length > 0">
+        <h4 class="mb-3"><i class="bi bi-folder"></i> Previous Reports</h4>
+        <div class="row">
+            <div class="col-md-6 mb-3" ng-repeat="report in healthReports | limitTo:6">
+                <div ng-class="getSeverityClass(report.severity)">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div>
+                            <h6 class="mb-1">Report from {{report.createdAt | formatDate}}</h6>
+                            <span class="badge" ng-class="getSeverityBadgeClass(report.severity)">
+                                {{report.severity | uppercase}}
+                            </span>
+                        </div>
+                        <div class="btn-group btn-group-sm">
+                            <button class="btn btn-sm btn-outline-primary" ng-click="viewReport(report)">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" ng-click="deleteReport(report)">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="small text-muted">
+                        <strong>Symptoms:</strong> {{report.symptoms.join(', ')}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
